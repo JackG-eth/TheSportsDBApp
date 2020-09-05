@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">JuniorAndroidTechTest</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loadData">Load Data</string>
+    <string name="menu_team">Team List</string>
+    <string name="select">Please Select Your Favourite Team</string>
+    <string name="Full_Name">Alternative Name:</string>
+    <string name="league">League:</string>
+    <string name="website">Website:</string>
+    <string name="Stadium">Stadium:</string>
+    <string name="Description">Description: </string>
+</resources>
