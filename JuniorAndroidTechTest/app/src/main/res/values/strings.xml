@@ -11,4 +11,6 @@
     <string name="website">Website:</string>
     <string name="Stadium">Stadium:</string>
     <string name="Description">Description: </string>
+    <string name="last_five_fixtures">Last Five Fixtures</string>
+    <string name="next_five_fixtures">Next Five Fixtures</string>
 </resources>

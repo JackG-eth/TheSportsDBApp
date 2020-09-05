@@ -1,18 +1,24 @@
 package com.example.juniorandroidtechtest.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.juniorandroidtechtest.Adapters.FixturesAdapter;
 import com.example.juniorandroidtechtest.R;
 
 import org.json.JSONArray;
@@ -26,13 +32,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchListener {
 
     private String mAnimalName;
     private String mImage;
     private String mTeamID;
     private String teamInfo;
+    private String fixtureList;
 
     private TextView mName;
     private ImageView mAnimalImage;
@@ -45,19 +53,76 @@ public class HomeFragment extends Fragment {
     private String website;
     private String description;
 
+    boolean fixtureNext;
+    boolean fixtureLast;
+
     private TextView mAltName;
     private TextView mLeague;
     private TextView mStadium;
     private TextView mWebsite;
     private TextView mDescription;
 
+    private ArrayList<String> mEvents = new ArrayList<>();
+    private ArrayList<String> mDates = new ArrayList<>();
+    private ArrayList<String> mHomeScore = new ArrayList<>();
+    private ArrayList<String> mAwayScore = new ArrayList<>();
+
+    private Button mButtonLast;
+    private Button mButtonNext;
+
+
+    private FixturesAdapter mFixturesAdapter;
+    private RecyclerView mRecyclerView;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        fixtureNext = false;
+        fixtureLast = false;
 
         mRoot = inflater.inflate(R.layout.fragment_home, container, false);
 
         mName = mRoot.findViewById(R.id.recycler_image_text_child);
         mAnimalImage = mRoot.findViewById(R.id.recycler_image_child);
+
+        mButtonNext = mRoot.findViewById(R.id.next_five);
+        mButtonLast = mRoot.findViewById(R.id.last_five);
+
+        mRecyclerView = mRoot.findViewById(R.id.fixture_recycler);
+        mFixturesAdapter = new FixturesAdapter(mEvents,mDates,mHomeScore,mAwayScore,getContext(),this);
+
+        // Make sure adapter is aware if there is a dataset change.
+        mRecyclerView.setAdapter(mFixturesAdapter);
+        mFixturesAdapter.notifyDataSetChanged();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mButtonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Here", "onClick: Here");
+                mEvents.clear();
+                mDates.clear();
+                mHomeScore.clear();
+                mAwayScore.clear();
+                mFixturesAdapter.notifyDataSetChanged();
+                fixtureNext = true;
+                fixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=" + mTeamID;
+                new JsonTask().execute(fixtureList);
+            }
+        });
+        mButtonLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Here", "onClick: Here");
+                mEvents.clear();
+                mDates.clear();
+                mHomeScore.clear();
+                mAwayScore.clear();
+                mFixturesAdapter.notifyDataSetChanged();
+                fixtureLast = true;
+                fixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventslast.php?id=" + mTeamID;
+                new JsonTask().execute(fixtureList);
+            }
+        });
 
         mAltName = mRoot.findViewById(R.id.alternate);
         mLeague = mRoot.findViewById(R.id.League);
@@ -91,7 +156,6 @@ public class HomeFragment extends Fragment {
         new JsonTask().execute(teamInfo);
         return mRoot;
     }
-
 
     private class JsonTask extends AsyncTask<String, String, String> {
 
@@ -143,19 +207,82 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            try {
-                JSONObject jsonbject = new JSONObject(result);
-                JSONArray jsonArray = jsonbject.getJSONArray("teams");
-                JSONObject explrObject = jsonArray.getJSONObject(0);
-                mAltName.setText(altName = explrObject.getString("strAlternate"));
-                mLeague.setText(league = explrObject.getString("strLeague"));
-                mStadium.setText(stadium = explrObject.getString("strStadium"));
-                mWebsite.setText(website = explrObject.getString("strWebsite"));
-                mDescription.setText(description = explrObject.getString("strDescriptionEN"));
+            if(fixtureNext){
+                Log.d("HereInsideTest", "onClick: Here");
+                try {
+                    JSONObject jsonbject = new JSONObject(result);
+                    JSONArray jsonArray = jsonbject.getJSONArray("events");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject explrObject = jsonArray.getJSONObject(i);
+                        mDates.add(explrObject.getString("dateEvent"));
+                        mEvents.add(explrObject.getString("strEvent"));
+                        if (explrObject.getString("intHomeScore").equals("null") || explrObject.getString("intHomeScore") == "null" ){
+                            mHomeScore.add("Fixture to be played");
+                            mAwayScore.add("");
+                        }else{
+                            mHomeScore.add(explrObject.getString("intHomeScore"));
+                            mAwayScore.add(explrObject.getString("intAwayScore"));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                initRecyclerView();
+            }
+            else if(fixtureLast){
+                Log.d("HereInsideTest", "onClick: Here");
+                try {
+                    JSONObject jsonbject = new JSONObject(result);
+                    JSONArray jsonArray = jsonbject.getJSONArray("results");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject explrObject = jsonArray.getJSONObject(i);
+                        mDates.add(explrObject.getString("dateEvent"));
+                        mEvents.add(explrObject.getString("strEvent"));
+                        mHomeScore.add(explrObject.getString("intHomeScore"));
+                        mAwayScore.add(explrObject.getString("intAwayScore"));
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                initRecyclerView();
+            }
+            else {
+                try {
+                    JSONObject jsonbject = new JSONObject(result);
+                    JSONArray jsonArray = jsonbject.getJSONArray("teams");
+                    JSONObject explrObject = jsonArray.getJSONObject(0);
+                    mAltName.setText(altName = explrObject.getString("strAlternate"));
+                    mLeague.setText(league = explrObject.getString("strLeague"));
+                    mStadium.setText(stadium = explrObject.getString("strStadium"));
+                    mWebsite.setText(website = explrObject.getString("strWebsite"));
+                    mDescription.setText(description = explrObject.getString("strDescriptionEN"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
+
+    private  void initRecyclerView(){
+        mRecyclerView = mRoot.findViewById(R.id.fixture_recycler);
+        mFixturesAdapter = new FixturesAdapter(mEvents,mDates,mHomeScore,mAwayScore,getContext(),this);
+        // Make sure adapter is aware if there is a dataset change.
+        mRecyclerView.setAdapter(mFixturesAdapter);
+        mFixturesAdapter.notifyDataSetChanged();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        fixtureLast = false;
+        fixtureNext = false;
+    }
+
+    @Override
+    public void OnRecyclerItemClick(int position) {
+        new AlertDialog.Builder(getActivity())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(mEvents.get(position))
+                .setMessage("Will Have Description of TV Channel")
+                .show();
+    }
+
 }
