@@ -5,4 +5,6 @@
     <color name="colorAccent">#d5a6e6</color>
     <color name="Text">#000000</color>
     <color name="background">#f7f0fa</color>
+    <color name="black">#ffffff</color>
+    <color name="delete">#ff0033</color>
 </resources>

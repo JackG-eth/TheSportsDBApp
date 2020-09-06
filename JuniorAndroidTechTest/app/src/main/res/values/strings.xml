@@ -14,5 +14,7 @@
     <string name="last_five_fixtures">Last Five Fixtures</string>
     <string name="next_five_fixtures">Next Five Fixtures</string>
     <string name="match_name">Fixture Played</string>
+    <string name="Change_Club">Change Club</string>
+    <string name="action_delete">Change Team</string>
     <string name="vs">-</string>
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/action_more"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        app:showAsAction="always"
+        android:orderInCategory="200"
+        android:title="@string/Change_Club">
+    </item>
+</menu>
