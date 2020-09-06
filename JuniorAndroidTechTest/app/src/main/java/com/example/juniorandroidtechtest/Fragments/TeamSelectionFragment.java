@@ -1,6 +1,7 @@
 package com.example.juniorandroidtechtest.Fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.juniorandroidtechtest.Adapters.SimpleTeamAdapter;
+import com.example.juniorandroidtechtest.Database.DataBaseHelper;
 import com.example.juniorandroidtechtest.R;
 
 import org.json.JSONArray;
@@ -43,6 +46,7 @@ public class TeamSelectionFragment extends Fragment implements SimpleTeamAdapter
 
     private View mRoot;
 
+    DataBaseHelper mDataBaseHelper;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,6 +66,8 @@ public class TeamSelectionFragment extends Fragment implements SimpleTeamAdapter
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         new JsonTask().execute("https://www.thesportsdb.com/api/v1/json/1/search_all_teams.php?l=English%20Premier%20League");
+
+        mDataBaseHelper = new DataBaseHelper(getContext());
 
         return mRoot;
     }
@@ -93,7 +99,6 @@ public class TeamSelectionFragment extends Fragment implements SimpleTeamAdapter
                 String line = "";
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
                 }
 
                 return buffer.toString();
@@ -171,15 +176,17 @@ public class TeamSelectionFragment extends Fragment implements SimpleTeamAdapter
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+
+                boolean insertdata = mDataBaseHelper.addData(mTeamId.get(value),mTeamNames.get(value),mTeamPhotos.get(value));
+                Log.d("1", "Data Added succesfully");
+                if (insertdata){
+                    Log.d("Toast", "Data Added succesfully");
+                }
+                else{
+                    Log.d("Toast", "Data added unsucc");
+                }
+
                 HomeFragment homeFragment = new HomeFragment();
-                Bundle bundle = new Bundle();
-
-                bundle.putString("TeamName",mTeamNames.get(value));
-                bundle.putString("TeamPhoto",mTeamPhotos.get(value));
-                bundle.putString("TeamId",mTeamId.get(value));
-
-
-                homeFragment.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(((ViewGroup)getView().getParent()).getId(), homeFragment, "findThisFragment")

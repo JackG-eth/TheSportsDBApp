@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.juniorandroidtechtest.Adapters.FixturesAdapter;
+import com.example.juniorandroidtechtest.Database.DataBaseHelper;
 import com.example.juniorandroidtechtest.R;
 
 import org.json.JSONArray;
@@ -70,7 +73,10 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
 
     private Button mButtonLast;
     private Button mButtonNext;
+    DataBaseHelper mDataBaseHelper;
 
+
+    private ArrayList<String> storedData = new ArrayList<>();
 
     private FixturesAdapter mFixturesAdapter;
     private RecyclerView mRecyclerView;
@@ -131,32 +137,51 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
         mWebsite = mRoot.findViewById(R.id.website);
         mDescription = mRoot.findViewById(R.id.Description);
 
-        Bundle bundle = this.getArguments();
-
-        if (bundle != null) {
-            mAnimalName = bundle.getString("TeamName");
-            mImage = bundle.getString("TeamPhoto");
-            mTeamID = bundle.getString("TeamId");
-
-            Log.d("ID", "onPostExecute: " + mTeamID);
+        mDataBaseHelper = new DataBaseHelper(getActivity());
+        mDataBaseHelper.getReadableDatabase();
+        storedData = mDataBaseHelper.getDataArray();
+        if(storedData.size() == 0){
+            mTeamID = "";
+            mAnimalName ="";
+            mImage = "";
+        }
+        else {
+            mTeamID = storedData.get(0);
+            mAnimalName = storedData.get(1);
+            mImage = storedData.get(2);
         }
 
-        mName.setText(mAnimalName);
-        Glide.with(getActivity())
-                .asBitmap()
-                .load(mImage)
-                .centerCrop()
-                .error(Glide.with(getActivity()).asBitmap().load(R.drawable.ic_launcher_background))
-                .centerCrop()
-                .into(mAnimalImage);
+        if(mTeamID.equals("")){
+            String ftag = "first Launch";
+            TeamSelectionFragment testFrag = new TeamSelectionFragment();
+
+            FragmentManager fragmentManager = getFragmentManager();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flContent, testFrag, ftag);
+            fragmentTransaction.addToBackStack(ftag);
+            fragmentTransaction.commit();
+        }
+
+        else {
+            mName.setText(mAnimalName);
+            Glide.with(getActivity())
+                    .asBitmap()
+                    .load(mImage)
+                    .centerCrop()
+                    .error(Glide.with(getActivity()).asBitmap().load(R.drawable.ic_launcher_background))
+                    .centerCrop()
+                    .into(mAnimalImage);
 
 
-        teamInfo = "https://www.thesportsdb.com/api/v1/json/1/lookupteam.php?id=" + mTeamID;
+            teamInfo = "https://www.thesportsdb.com/api/v1/json/1/lookupteam.php?id=" + mTeamID;
 
-        Log.d("StringT", "onPostExecute: " + teamInfo);
-        new JsonTask().execute(teamInfo);
+            Log.d("StringT", "onPostExecute: " + teamInfo);
+            new JsonTask().execute(teamInfo);
+        }
         return mRoot;
     }
+
 
     private class JsonTask extends AsyncTask<String, String, String> {
 
