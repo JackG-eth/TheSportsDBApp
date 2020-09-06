@@ -2,12 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width = "200dp"
@@ -21,79 +23,131 @@
         android:layout_height="wrap_content"
         android:id="@+id/recycler_image_text_child"
         android:text="@string/menu_team"
+        android:textStyle="bold"
         style="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:layout_gravity="center_horizontal">
     </TextView>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="@string/Full_Name" />
 
             <TextView
+                android:layout_weight="1"
+                android:layout_gravity="center|left"
+                android:textColor="@color/colorPrimary"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:id="@+id/alternate"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="@string/league" />
 
             <TextView
+                android:layout_weight="1"
+                android:layout_gravity="center|left"
+                android:textColor="@color/colorPrimary"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:id="@+id/League"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                  />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="@string/Stadium" />
 
             <TextView
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:id="@+id/Stadium"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:text="@string/website" />
 
             <TextView
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:id="@+id/website"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -101,8 +155,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:layout_marginTop="@dimen/activity_horizontal_margin">
             <Button
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/custom_button"
                 android:id="@+id/last_five"
                 style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:layout_width="wrap_content"
@@ -114,7 +171,9 @@
                 android:layout_weight="1"/>
 
             <Button
+                android:background="@drawable/custom_button"
                 android:id="@+id/next_five"
+                android:textColor="@color/colorPrimary"
                 style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_width="wrap_content"
@@ -122,10 +181,11 @@
                 android:layout_gravity="right"
                 android:text="@string/next_five_fixtures"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:layout_weight="1"></Button>
+                android:layout_weight="1" />
 
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/fixture_recycler">
@@ -137,12 +197,16 @@
 
             <TextView
                 android:layout_gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_horizontal_margin"
                 android:text="@string/Description" />
 
             <TextView
+                android:textColor="@color/colorPrimary"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:layout_gravity="center"
                 android:id="@+id/Description"
                 android:layout_margin="@dimen/activity_horizontal_margin"
