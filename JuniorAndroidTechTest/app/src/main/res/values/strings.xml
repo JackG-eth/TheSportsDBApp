@@ -13,4 +13,6 @@
     <string name="Description">Description: </string>
     <string name="last_five_fixtures">Last Five Fixtures</string>
     <string name="next_five_fixtures">Next Five Fixtures</string>
+    <string name="match_name">Fixture Played</string>
+    <string name="vs">VS</string>
 </resources>

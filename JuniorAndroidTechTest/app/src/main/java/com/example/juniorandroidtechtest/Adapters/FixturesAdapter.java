@@ -68,8 +68,8 @@ public class FixturesAdapter extends RecyclerView.Adapter<FixturesAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.date.setText(mDate.get(position));
         holder.fixture.setText(mEvent.get(position));
-        holder.homeScore.setText(mHomeScore.get(position));
-        holder.awayScore.setText(mAwayScore.get(position));
+        //holder.homeScore.setText(mHomeScore.get(position));
+        //holder.awayScore.setText(mAwayScore.get(position));
     }
 
     /*
@@ -97,8 +97,8 @@ public class FixturesAdapter extends RecyclerView.Adapter<FixturesAdapter.ViewHo
             super(itemView);
             date = itemView.findViewById(R.id.item_date);
             fixture = itemView.findViewById(R.id.item_fixture);
-            homeScore = itemView.findViewById(R.id.home_score);
-            awayScore = itemView.findViewById(R.id.away_score);
+            //homeScore = itemView.findViewById(R.id.home_score);
+            //awayScore = itemView.findViewById(R.id.away_score);
             this.onMatchListener = onMatchListener;
 
             itemView.setOnClickListener(this);

@@ -1,6 +1,7 @@
 package com.example.juniorandroidtechtest.Fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -217,8 +218,8 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                         mDates.add(explrObject.getString("dateEvent"));
                         mEvents.add(explrObject.getString("strEvent"));
                         if (explrObject.getString("intHomeScore").equals("null") || explrObject.getString("intHomeScore") == "null" ){
-                            mHomeScore.add("Fixture to be played");
-                            mAwayScore.add("");
+                            mHomeScore.add("Time of Match");
+                            mAwayScore.add(explrObject.getString("strTime"));
                         }else{
                             mHomeScore.add(explrObject.getString("intHomeScore"));
                             mAwayScore.add(explrObject.getString("intAwayScore"));
@@ -278,11 +279,39 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
 
     @Override
     public void OnRecyclerItemClick(int position) {
-        new AlertDialog.Builder(getActivity())
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(mEvents.get(position))
-                .setMessage("Will Have Description of TV Channel")
-                .show();
+
+        if(mHomeScore.get(position).equals("Time of Match")){
+            final Dialog dialog = new Dialog(getActivity());
+            View dView = getLayoutInflater().inflate(R.layout.futuredialog, null);
+
+            final TextView nMatchName = dView.findViewById(R.id.match_played_future);
+            final TextView nHomeScore = dView.findViewById(R.id.support_text);
+            final TextView nAwayScore = dView.findViewById(R.id.time_played);
+
+            nMatchName.setText(mEvents.get(position));
+            nHomeScore.setText(mHomeScore.get(position));
+            nAwayScore.setText(mAwayScore.get(position));
+
+            dialog.setContentView(dView);
+            dialog.create();
+            dialog.show();
+        }
+        else {
+            final Dialog dialog = new Dialog(getActivity());
+            View dView = getLayoutInflater().inflate(R.layout.previousdialog, null);
+
+            final TextView nMatchName = dView.findViewById(R.id.match_played);
+            final TextView nHomeScore = dView.findViewById(R.id.home_goals);
+            final TextView nAwayScore = dView.findViewById(R.id.away_goals);
+
+            nMatchName.setText(mEvents.get(position));
+            nHomeScore.setText(mHomeScore.get(position));
+            nAwayScore.setText(mAwayScore.get(position));
+
+            dialog.setContentView(dView);
+            dialog.create();
+            dialog.show();
+        }
     }
 
 }
