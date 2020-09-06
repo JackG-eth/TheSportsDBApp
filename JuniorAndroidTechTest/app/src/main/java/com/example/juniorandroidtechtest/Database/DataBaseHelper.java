@@ -18,11 +18,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String COL2 = "Name";
     private static final String COL3 = "Photo";
 
-
+    /*
+        Constructor
+     */
     public DataBaseHelper(Context context) {
         super(context,TABLE_NAME,null,1);
     }
 
+    /*
+     * Create table to store team choice
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = ("CREATE TABLE " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -32,12 +37,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTable);
     }
 
+    /*
+        Method to drop table if it exists
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
+
+    /*
+        Method to write users choice to DB
+     */
     public boolean addData(String id, String name, String photo ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -45,10 +57,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL2, name);
         contentValues.put(COL3, photo);
 
-        Log.d(TAG, "addData: Adding " + id + " to " + TABLE_NAME);
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-        //if date as inserted incorrectly it will return -1
+        //if data as inserted incorrectly it will return -1
         if (result == -1) {
             return false;
         } else {
@@ -56,6 +67,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    /**
+     * Method to get data from array
+     * @return Array used to populate home screen
+     */
     public ArrayList<String> getDataArray() {
         SQLiteDatabase db = this.getWritableDatabase();
         ArrayList<String> teamSaved = new ArrayList<String>();
@@ -85,12 +101,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Method for deleting team choice
+     */
     public void deleteTableColumn(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM team_table WHERE id IN (SELECT id FROM team_table ORDER BY id DESC LIMIT 1);";
         db.execSQL(query);
     }
 
+    /*
+        Get the number of rows
+     */
     public int tableLength(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM team_table", null);

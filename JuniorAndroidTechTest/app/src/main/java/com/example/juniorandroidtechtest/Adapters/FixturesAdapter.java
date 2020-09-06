@@ -26,7 +26,6 @@ public class FixturesAdapter extends RecyclerView.Adapter<FixturesAdapter.ViewHo
     private ArrayList<String> mHomeScore;
     private ArrayList<String> mAwayScore;
 
-
     // Allows the class to access application specific resources
     private Context mContext;
 
@@ -68,8 +67,7 @@ public class FixturesAdapter extends RecyclerView.Adapter<FixturesAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.date.setText(mDate.get(position));
         holder.fixture.setText(mEvent.get(position));
-        //holder.homeScore.setText(mHomeScore.get(position));
-        //holder.awayScore.setText(mAwayScore.get(position));
+
     }
 
     /*

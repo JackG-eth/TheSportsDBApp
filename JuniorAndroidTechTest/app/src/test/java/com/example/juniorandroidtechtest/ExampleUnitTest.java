@@ -1,6 +1,19 @@
 package com.example.juniorandroidtechtest;
 
+import android.app.Instrumentation;
+import android.content.Context;
+import android.opengl.Matrix;
+
+import com.example.juniorandroidtechtest.Activities.MainActivity;
+import com.example.juniorandroidtechtest.Database.DataBaseHelper;
+
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
@@ -10,8 +23,5 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
+
 }

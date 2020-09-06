@@ -19,11 +19,9 @@ import com.example.juniorandroidtechtest.Fragments.TeamSelectionFragment;
 import com.example.juniorandroidtechtest.R;
 
 
-
-
 public class MainActivity extends AppCompatActivity {
 
-
+    // Database Management
     DataBaseHelper mDataBaseHelper;
 
     @Override
@@ -43,12 +41,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Inflate Toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
             getMenuInflater().inflate(R.menu.main_manu, menu);
         return true;
     }
 
+    // Dealing with toolbar actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Disable Back Button
+     * Back Button Functionality
      */
     @Override
     public void onBackPressed() {
@@ -154,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     *
+     */
     private void updateUI() {
         String ftag = "";
         Fragment fragment = null;

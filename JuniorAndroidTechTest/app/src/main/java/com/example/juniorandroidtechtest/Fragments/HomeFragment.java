@@ -1,8 +1,6 @@
 package com.example.juniorandroidtechtest.Fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,22 +41,15 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
     private String mAnimalName;
     private String mImage;
     private String mTeamID;
-    private String teamInfo;
-    private String fixtureList;
+    private String mTeamInfo;
+    private String mFixtureList;
 
     private TextView mName;
     private ImageView mAnimalImage;
-
     private View mRoot;
 
-    private String altName;
-    private String league;
-    private String stadium;
-    private String website;
-    private String description;
-
-    boolean fixtureNext;
-    boolean fixtureLast;
+    boolean mFixtureNext;
+    boolean mFixtureLast;
 
     private TextView mAltName;
     private TextView mLeague;
@@ -75,16 +66,15 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
     private Button mButtonNext;
     DataBaseHelper mDataBaseHelper;
 
-
-    private ArrayList<String> storedData = new ArrayList<>();
+    private ArrayList<String> mStoredData = new ArrayList<>();
 
     private FixturesAdapter mFixturesAdapter;
     private RecyclerView mRecyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        fixtureNext = false;
-        fixtureLast = false;
+        mFixtureNext = false;
+        mFixtureLast = false;
 
         mRoot = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -111,9 +101,9 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                 mHomeScore.clear();
                 mAwayScore.clear();
                 mFixturesAdapter.notifyDataSetChanged();
-                fixtureNext = true;
-                fixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=" + mTeamID;
-                new JsonTask().execute(fixtureList);
+                mFixtureNext = true;
+                mFixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=" + mTeamID;
+                new JsonTask().execute(mFixtureList);
             }
         });
         mButtonLast.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +115,9 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                 mHomeScore.clear();
                 mAwayScore.clear();
                 mFixturesAdapter.notifyDataSetChanged();
-                fixtureLast = true;
-                fixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventslast.php?id=" + mTeamID;
-                new JsonTask().execute(fixtureList);
+                mFixtureLast = true;
+                mFixtureList = "https://www.thesportsdb.com/api/v1/json/1/eventslast.php?id=" + mTeamID;
+                new JsonTask().execute(mFixtureList);
             }
         });
 
@@ -139,16 +129,16 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
 
         mDataBaseHelper = new DataBaseHelper(getActivity());
         mDataBaseHelper.getReadableDatabase();
-        storedData = mDataBaseHelper.getDataArray();
-        if(storedData.size() == 0){
+        mStoredData = mDataBaseHelper.getDataArray();
+        if(mStoredData.size() == 0){
             mTeamID = "";
             mAnimalName ="";
             mImage = "";
         }
         else {
-            mTeamID = storedData.get(0);
-            mAnimalName = storedData.get(1);
-            mImage = storedData.get(2);
+            mTeamID = mStoredData.get(0);
+            mAnimalName = mStoredData.get(1);
+            mImage = mStoredData.get(2);
         }
 
         if(mTeamID.equals("")){
@@ -174,10 +164,10 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                     .into(mAnimalImage);
 
 
-            teamInfo = "https://www.thesportsdb.com/api/v1/json/1/lookupteam.php?id=" + mTeamID;
+            mTeamInfo = "https://www.thesportsdb.com/api/v1/json/1/lookupteam.php?id=" + mTeamID;
 
-            Log.d("StringT", "onPostExecute: " + teamInfo);
-            new JsonTask().execute(teamInfo);
+            Log.d("StringT", "onPostExecute: " + mTeamInfo);
+            new JsonTask().execute(mTeamInfo);
         }
         return mRoot;
     }
@@ -190,10 +180,8 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
         }
 
         protected String doInBackground(String... params) {
-
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-
             try {
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
@@ -208,9 +196,7 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
                 }
-
                 return buffer.toString();
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -233,7 +219,7 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(fixtureNext){
+            if(mFixtureNext){
                 Log.d("HereInsideTest", "onClick: Here");
                 try {
                     JSONObject jsonbject = new JSONObject(result);
@@ -255,7 +241,7 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                 }
                 initRecyclerView();
             }
-            else if(fixtureLast){
+            else if(mFixtureLast){
                 Log.d("HereInsideTest", "onClick: Here");
                 try {
                     JSONObject jsonbject = new JSONObject(result);
@@ -278,11 +264,11 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
                     JSONObject jsonbject = new JSONObject(result);
                     JSONArray jsonArray = jsonbject.getJSONArray("teams");
                     JSONObject explrObject = jsonArray.getJSONObject(0);
-                    mAltName.setText(altName = explrObject.getString("strAlternate"));
-                    mLeague.setText(league = explrObject.getString("strLeague"));
-                    mStadium.setText(stadium = explrObject.getString("strStadium"));
-                    mWebsite.setText(website = explrObject.getString("strWebsite"));
-                    mDescription.setText(description = explrObject.getString("strDescriptionEN"));
+                    mAltName.setText(explrObject.getString("strAlternate"));
+                    mLeague.setText(explrObject.getString("strLeague"));
+                    mStadium.setText(explrObject.getString("strStadium"));
+                    mWebsite.setText(explrObject.getString("strWebsite"));
+                    mDescription.setText(explrObject.getString("strDescriptionEN"));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -298,8 +284,8 @@ public class HomeFragment extends Fragment implements FixturesAdapter.OnMatchLis
         mRecyclerView.setAdapter(mFixturesAdapter);
         mFixturesAdapter.notifyDataSetChanged();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        fixtureLast = false;
-        fixtureNext = false;
+        mFixtureLast = false;
+        mFixtureNext = false;
     }
 
     @Override
